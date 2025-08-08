@@ -323,7 +323,7 @@ export default function ResourceDetails({
           );
         } else if (url.includes('pbs') || url.includes('twimg')) {
           return (
-            <img key={index} src={url} alt={Post ${index}} className="postMedia" />
+            <img key={index} src={url} alt={`Post ${index}`} className="postMedia" />
           );
         } else {
           return <p key={index}>Media not available</p>;
