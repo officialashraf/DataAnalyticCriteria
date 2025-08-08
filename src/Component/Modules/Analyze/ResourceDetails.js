@@ -301,11 +301,37 @@ export default function ResourceDetails({
                         </div>
                     </div>
                     <p className="activityContent">{resource.unified_activity_content}</p>
-                    <img
-                        src={resource.socialmedia_media_url}
-                        alt="Post"
-                        className="postImage"
-                    />
+                  {resource.socialmedia_media_url && (() => {
+  let urls = [];
+  try {
+    urls = typeof resource.socialmedia_media_url === 'string' 
+      ? JSON.parse(resource.socialmedia_media_url) 
+      : resource.socialmedia_media_url;
+  } catch (error) {
+    return <p>Invalid media format</p>;
+  }
+  return (
+    <div className="imageGridWrapper">
+      {urls.map((url, index) => {
+        url = url.trim();
+        if (url.includes('video')) {
+          return (
+            <video key={index} controls className="postImage" preload="metadata">
+              <source src={url} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          );
+        } else if (url.includes('pbs') || url.includes('twimg')) {
+          return (
+            <img key={index} src={url} alt={Post ${index}} className="postMedia" />
+          );
+        } else {
+          return <p key={index}>Media not available</p>;
+        }
+      })}
+    </div>
+  );
+})()}
                     <div className="view" style={{ display: "flex", gap: "4px" }}>
                         <div className="time">
                             <span>
